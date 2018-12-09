@@ -79,3 +79,7 @@ dist
 
 # IDE
 .idea
+
+# For Firebase
+.firebase
+.firebaserc
