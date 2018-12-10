@@ -84,7 +84,8 @@ export default {
       drawer: true,
       fixed: false,
       items: [
-        { icon: 'apps', title: 'Welcome', to: '/' },
+        { icon: 'book', title: 'Any Memo', to: '/' },
+        { icon: 'apps', title: 'Welcome', to: '/SampleIndex' },
         { icon: 'bubble_chart', title: 'Inspire', to: '/inspire' }
       ],
       miniVariant: false,
