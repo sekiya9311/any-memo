@@ -56,8 +56,8 @@ const createStore = () => {
         }
         context.dispatch('bindUserData', userDataRef)
       },
-      bindUserData: firebaseAction(({ bindFirebaseRef }, data) => {
-        bindFirebaseRef('userData', data)
+      bindUserData: firebaseAction(async ({ bindFirebaseRef }, data) => {
+        await bindFirebaseRef('userData', data)
       })
     }
   })
