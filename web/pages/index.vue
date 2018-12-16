@@ -26,7 +26,7 @@
                 </v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
-                <v-icon>
+                <v-icon @click="deleteMemo(index)">
                   delete
                 </v-icon>
               </v-list-tile-action>
@@ -51,7 +51,11 @@ export default {
     await this.$store.dispatch('getUser')
   },
   methods: {
-    ...mapActions(['authGoogle'])
+    ...mapActions(['authGoogle']),
+    deleteMemo(index) {
+      // TODO
+      console.log(`call deleteMemo(${index})`)
+    }
   }
 }
 </script>
