@@ -5,6 +5,9 @@ import { firebaseAction, firebaseMutations } from 'vuexfire'
 
 const provider = new firebase.auth.GoogleAuthProvider()
 const fireStore = firebase.firestore()
+fireStore.settings({
+  timestampsInSnapshots: true
+})
 
 Vue.use(Vuex)
 
@@ -46,19 +49,12 @@ const createStore = () => {
         }
         context.commit('setUser', user)
 
-        const userData = fireStore.collection('users').doc(user.uid)
-        if (!userData) {
+        const userDataRef = await fireStore.collection('users').doc(user.uid)
+        if (!(await userDataRef.get()).exists) {
           // new user !!
-          userData = {
-            memos: []
-          }
-          fireStore
-            .collection('users')
-            .doc(user.uid)
-            .set(userData)
-          userData = fireStore.collection('users').doc(user.uid) // TODO: これいる?
+          userDataRef.set({ memos: [] })
         }
-        context.dispatch('bindUserData', userData)
+        context.dispatch('bindUserData', userDataRef)
       },
       bindUserData: firebaseAction(({ bindFirebaseRef }, data) => {
         bindFirebaseRef('userData', data)
