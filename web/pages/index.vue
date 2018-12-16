@@ -4,6 +4,14 @@
       <!-- login and input -->
       <div v-if="user">
         <!-- already auth -->
+        <v-form>
+          <v-textarea v-model="newMemo" />
+          <v-btn
+            color="info"
+            @click="addMemo">
+            add memo
+          </v-btn>
+        </v-form>
       </div>
       <div v-else>
         <v-btn
@@ -42,7 +50,9 @@
 import { mapGetters, mapActions } from 'vuex'
 export default {
   data() {
-    return {}
+    return {
+      newMemo: ''
+    }
   },
   computed: {
     ...mapGetters(['user', 'userMemos'])
@@ -55,6 +65,11 @@ export default {
     deleteMemo(index) {
       // TODO
       console.log(`call deleteMemo(${index})`)
+    },
+    addMemo() {
+      // TODO
+      console.log(`call addMemo, newMemo: \'${this.newMemo}\'`)
+      this.newMemo = ''
     }
   }
 }
