@@ -19,13 +19,19 @@ const createStore = () => {
        */
       user: null,
       /**
-       * { memos: Array<{ context: string, created_time: Date }> }
+       * { memos: Array<{ context: string, created_time: timestamp }> }
        */
-      userData: Array
+      userData: null
     },
     getters: {
       user: state => state.user,
-      userData: state => state.userData
+      userMemos: state =>
+        (state.userData || { memos: [] }).memos.map(memo => {
+          return {
+            context: memo.context,
+            createdTime: memo.created_time.toDate()
+          }
+        })
     },
     mutations: {
       setUser: (state, user) => {
@@ -54,7 +60,7 @@ const createStore = () => {
           // new user !!
           userDataRef.set({ memos: [] })
         }
-        context.dispatch('bindUserData', userDataRef)
+        await context.dispatch('bindUserData', userDataRef)
       },
       bindUserData: firebaseAction(async ({ bindFirebaseRef }, data) => {
         await bindFirebaseRef('userData', data)
