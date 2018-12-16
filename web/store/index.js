@@ -48,7 +48,7 @@ const createStore = () => {
 
         const userData = fireStore.collection('users').doc(user.uid)
         if (!userData) {
-          // user user !!
+          // new user !!
           userData = {
             memos: []
           }
