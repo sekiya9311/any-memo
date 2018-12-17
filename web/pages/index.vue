@@ -43,6 +43,21 @@
         </v-list>
       </div>
     </v-flex>
+    <v-dialog
+      v-model="loading"
+      width="500">
+      <v-card>
+        <v-card-title
+          primary-title>
+          Loading...
+        </v-card-title>
+        <v-divider />
+        <v-card-actions>
+          <v-progress-linear
+            :indeterminate="true" />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 
@@ -51,14 +66,18 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data() {
     return {
-      newMemo: ''
+      newMemo: '',
+      loading: false
     }
   },
   computed: {
     ...mapGetters(['user', 'userMemos'])
   },
   async mounted() {
-    await this.$store.dispatch('getUser')
+    this.loading = true
+    this.$store.dispatch('getUser').then(e => {
+      this.loading = false
+    })
   },
   methods: {
     ...mapActions(['authGoogle']),
