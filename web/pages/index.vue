@@ -107,7 +107,6 @@ export default {
   methods: {
     ...mapActions(['authGoogle']),
     deleteMemo(index) {
-      // TODO
       console.log(`call deleteMemo(${index})`)
       this.loading = true
       this.loadingText = 'Deleting...'
