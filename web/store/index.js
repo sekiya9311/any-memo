@@ -76,6 +76,15 @@ const createStore = () => {
               created_time: nowTimeStamp
             })
           })
+      },
+      async deleteMemo({ state }, index) {
+        const val = state.userData.memos[index]
+        await fireStore
+          .collection('users')
+          .doc(state.user.uid)
+          .update({
+            memos: firebase.firestore.FieldValue.arrayRemove(val)
+          })
       }
     }
   })

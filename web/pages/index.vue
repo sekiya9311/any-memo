@@ -109,6 +109,11 @@ export default {
     deleteMemo(index) {
       // TODO
       console.log(`call deleteMemo(${index})`)
+      this.loading = true
+      this.loadingText = 'Deleting...'
+      this.$store.dispatch('deleteMemo', index).then(e => {
+        this.loading = false
+      })
     },
     addMemo() {
       console.log(`call addMemo, newMemo: \'${this.newMemo}\'`)
