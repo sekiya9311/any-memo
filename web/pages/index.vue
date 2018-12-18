@@ -4,6 +4,24 @@
       <!-- login and input -->
       <div v-if="user">
         <!-- already auth -->
+        <v-container>
+          <v-layout
+            wrap
+            align-end>
+            <v-flex xs1>
+              <v-avatar>
+                <img :src="user.photoURL">
+              </v-avatar>
+            </v-flex>
+            <v-flex xs5>
+              <strong
+                class="subheading"
+                style="margin-left: 1em;">
+                {{ user.displayName }}
+              </strong>
+            </v-flex>
+          </v-layout>
+        </v-container>
         <v-form>
           <v-textarea v-model="newMemo" />
           <v-btn
