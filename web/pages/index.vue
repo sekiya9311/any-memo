@@ -52,9 +52,14 @@
                 </v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
-                <v-icon @click="deleteMemo(index)">
-                  delete
-                </v-icon>
+                <v-btn
+                  icon
+                  ripple
+                  @click="deleteMemo(index)">
+                  <v-icon>
+                    delete
+                  </v-icon>
+                </v-btn>
               </v-list-tile-action>
             </v-list-tile>
           </template>
@@ -67,7 +72,7 @@
       <v-card>
         <v-card-title
           primary-title>
-          Loading...
+          {{ loadingText }}
         </v-card-title>
         <v-divider />
         <v-card-actions>
@@ -85,7 +90,8 @@ export default {
   data() {
     return {
       newMemo: '',
-      loading: false
+      loading: false,
+      loadingText: ''
     }
   },
   computed: {
@@ -93,6 +99,7 @@ export default {
   },
   async mounted() {
     this.loading = true
+    this.loadingText = 'Loading...'
     this.$store.dispatch('getUser').then(e => {
       this.loading = false
     })
@@ -104,8 +111,12 @@ export default {
       console.log(`call deleteMemo(${index})`)
     },
     addMemo() {
-      // TODO
       console.log(`call addMemo, newMemo: \'${this.newMemo}\'`)
+      this.loading = true
+      this.loadingText = 'Adding...'
+      this.$store.dispatch('addMemo', this.newMemo).then(e => {
+        this.loading = false
+      })
       this.newMemo = ''
     }
   }

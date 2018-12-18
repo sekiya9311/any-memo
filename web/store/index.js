@@ -64,7 +64,19 @@ const createStore = () => {
       },
       bindUserData: firebaseAction(async ({ bindFirebaseRef }, data) => {
         await bindFirebaseRef('userData', data)
-      })
+      }),
+      async addMemo({ state }, memo) {
+        const nowTimeStamp = firebase.firestore.Timestamp.fromDate(new Date())
+        await fireStore
+          .collection('users')
+          .doc(state.user.uid)
+          .update({
+            memos: firebase.firestore.FieldValue.arrayUnion({
+              context: memo,
+              created_time: nowTimeStamp
+            })
+          })
+      }
     }
   })
 }
