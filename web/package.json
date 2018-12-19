@@ -19,6 +19,7 @@
     "dotenv": "^6.2.0",
     "express": "^4.16.3",
     "firebase": "^5.7.0",
+    "font-awesome": "^4.7.0",
     "nuxt": "^2.0.0",
     "vuetify": "^1.2.4",
     "vuexfire": "^3.0.0-alpha.13"
