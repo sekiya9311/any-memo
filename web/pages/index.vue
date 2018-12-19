@@ -1,19 +1,20 @@
 <template>
-  <v-layout>
-    <v-flex xs4>
+  <v-layout wrap>
+    <v-flex
+      row
+      xl4>
       <!-- login and input -->
       <div v-if="user">
         <!-- already auth -->
         <v-container>
           <v-layout
-            wrap
             align-end>
-            <v-flex xs1>
+            <v-flex xl1>
               <v-avatar>
                 <img :src="user.photoURL">
               </v-avatar>
             </v-flex>
-            <v-flex xs5>
+            <v-flex xl5>
               <strong
                 class="subheading"
                 style="margin-left: 1em;">
@@ -37,7 +38,7 @@
           @click="authGoogle">auth Google</v-btn>
       </div>
     </v-flex>
-    <v-flex xs8>
+    <v-flex xl8>
       <!-- memo list -->
       <div v-if="user && userMemos">
         <v-list>
