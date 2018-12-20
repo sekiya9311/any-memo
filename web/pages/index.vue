@@ -4,93 +4,51 @@
       row
       xl4>
       <!-- login and input -->
-      <div v-if="user">
-        <!-- already auth -->
-        <v-container>
-          <v-layout
-            align-end>
-            <v-flex xl1>
-              <v-avatar>
-                <img :src="user.photoURL">
-              </v-avatar>
-            </v-flex>
-            <v-flex xl5>
-              <strong
-                class="subheading"
-                style="margin-left: 1em;">
-                {{ user.displayName }}
-              </strong>
-            </v-flex>
-          </v-layout>
-        </v-container>
-        <v-form>
-          <v-textarea v-model="newMemo" />
-          <v-btn
-            color="info"
-            @click="addMemo">
-            add memo
-          </v-btn>
-        </v-form>
-      </div>
+      <add-memo-form
+        v-if="user"
+        :user="user"
+        @add-memo="addMemo" />
       <div v-else>
         <v-btn
           color="info"
-          @click="authGoogle">auth Google</v-btn>
+          @click="authGoogle">
+          auth Google
+        </v-btn>
       </div>
     </v-flex>
     <v-flex xl8>
       <!-- memo list -->
       <div v-if="user && userMemos">
         <v-list>
-          <template v-for="(memo, index) in userMemos">
-            <v-list-tile :key="index">
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  {{ memo.context }}
-                </v-list-tile-title>
-                <v-list-tile-sub-title>
-                  {{ memo.createdTime.toLocaleString() }}
-                </v-list-tile-sub-title>
-              </v-list-tile-content>
-              <v-list-tile-action>
-                <v-btn
-                  icon
-                  ripple
-                  @click="deleteMemo(index)">
-                  <v-icon>
-                    delete
-                  </v-icon>
-                </v-btn>
-              </v-list-tile-action>
-            </v-list-tile>
-          </template>
+          <display-memo
+            v-for="(memo, index) in userMemos"
+            :key="index"
+            :idx="index"
+            :memo="memo"
+            @delete-memo="deleteMemo" />
         </v-list>
       </div>
     </v-flex>
-    <v-dialog
-      v-model="loading"
-      width="500">
-      <v-card>
-        <v-card-title
-          primary-title>
-          {{ loadingText }}
-        </v-card-title>
-        <v-divider />
-        <v-card-actions>
-          <v-progress-linear
-            :indeterminate="true" />
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <my-dialog
+      :loading="loading"
+      :loading-text="loadingText" />
   </v-layout>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import AddMemoForm from '~/components/AddMemoForm.vue'
+import DisplayMemo from '~/components/DisplayMemo.vue'
+import MyDialog from '~/components/MyDialog.vue'
+
 export default {
+  components: {
+    AddMemoForm,
+    DisplayMemo,
+    MyDialog
+  },
   data() {
     return {
-      newMemo: '',
       loading: false,
       loadingText: ''
     }
@@ -115,14 +73,13 @@ export default {
         this.loading = false
       })
     },
-    addMemo() {
-      console.log(`call addMemo, newMemo: \'${this.newMemo}\'`)
+    addMemo(memo) {
+      console.log(`call addMemo, newMemo: \'${memo}\'`)
       this.loading = true
       this.loadingText = 'Adding...'
-      this.$store.dispatch('addMemo', this.newMemo).then(e => {
+      this.$store.dispatch('addMemo', memo).then(e => {
         this.loading = false
       })
-      this.newMemo = ''
     }
   }
 }
