@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -49,7 +51,25 @@ class _MyHomePageState extends State<AnyMemoPage> {
   Widget buildGoogleSignIn() {
     // TODO: implememts
   }
+  
   Widget buildAppBody() {
     return Center();
+  }
+
+  Future<FirebaseUser> _doGoogleSignIn() async {
+    final googleSignIn = GoogleSignIn();
+    final firebaseAuth = FirebaseAuth.instance;
+
+    final googleUser = await googleSignIn.signIn();
+    final googleAuth = await googleUser.authentication;
+
+    final credential = GoogleAuthProvider.getCredential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken
+    );
+
+    final currentUser = await firebaseAuth.signInWithCredential(credential);
+
+    return currentUser;
   }
 }
