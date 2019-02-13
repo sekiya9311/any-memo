@@ -40,18 +40,17 @@ class _MyHomePageState extends State<AnyMemoPage> {
       body = buildGoogleSignIn();
     }
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: body,
-      floatingActionButton: incBtn
-    );
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: body,
+        floatingActionButton: incBtn);
   }
 
   Widget buildGoogleSignIn() {
     // TODO: implememts
   }
-  
+
   Widget buildAppBody() {
     return Center();
   }
@@ -64,9 +63,7 @@ class _MyHomePageState extends State<AnyMemoPage> {
     final googleAuth = await googleUser.authentication;
 
     final credential = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken
-    );
+        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
     final currentUser = await firebaseAuth.signInWithCredential(credential);
 
