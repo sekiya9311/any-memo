@@ -62,10 +62,9 @@ class _MyHomePageState extends State<AnyMemoPage> {
     final googleUser = await googleSignIn.signIn();
     final googleAuth = await googleUser.authentication;
 
-    final credential = GoogleAuthProvider.getCredential(
-        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-
-    final currentUser = await firebaseAuth.signInWithCredential(credential);
+    final currentUser = await firebaseAuth.signInWithGoogle(
+      accessToken: googleAuth.accessToken, idToken: googleAuth.idToken
+    );
 
     return currentUser;
   }
