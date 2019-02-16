@@ -30,14 +30,14 @@ class _MyHomePageState extends State<AnyMemoPage> {
     Widget body;
     FloatingActionButton incBtn;
     if (_user != null) {
-      body = buildAppBody();
+      body = _buildAppBody();
       incBtn = FloatingActionButton(
         onPressed: _addMemo,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       );
     } else {
-      body = buildGoogleSignIn();
+      body = _buildGoogleSignIn();
     }
     return Scaffold(
         appBar: AppBar(
@@ -47,7 +47,7 @@ class _MyHomePageState extends State<AnyMemoPage> {
         floatingActionButton: incBtn);
   }
 
-  Widget buildGoogleSignIn() {
+  Widget _buildGoogleSignIn() {
     return Center(
       child: RaisedButton(
         child: Text('AUTH GOOGLE'),
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<AnyMemoPage> {
     );
   }
 
-  Widget buildAppBody() {
+  Widget _buildAppBody() {
     return Center();
   }
 
