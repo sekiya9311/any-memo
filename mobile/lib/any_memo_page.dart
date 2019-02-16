@@ -48,7 +48,20 @@ class _MyHomePageState extends State<AnyMemoPage> {
   }
 
   Widget buildGoogleSignIn() {
-    // TODO: implememts
+    return Center(
+      child: RaisedButton(
+        child: Text('AUTH GOOGLE'),
+        onPressed: () {
+          _doGoogleSignIn().then((user) {
+            setState(() {
+              _user = user;
+            });
+          }).catchError((err) {
+            print(err);
+          });
+        },
+      ),
+    );
   }
 
   Widget buildAppBody() {
@@ -63,8 +76,7 @@ class _MyHomePageState extends State<AnyMemoPage> {
     final googleAuth = await googleUser.authentication;
 
     final currentUser = await firebaseAuth.signInWithGoogle(
-      accessToken: googleAuth.accessToken, idToken: googleAuth.idToken
-    );
+        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
     return currentUser;
   }
