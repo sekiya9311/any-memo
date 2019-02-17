@@ -21,12 +21,13 @@ class _MyHomePageState extends State<AnyMemoPage> {
     // TODO: implememts
   }
 
-  void _deleteMemo(List curMemos, dynamic delMemo) {
-    final updMemos = curMemos.where((memo) => memo != delMemo).toList();
-    Firestore.instance
+  Future<void> _deleteMemo(dynamic delMemo) {
+    return Firestore.instance
         .collection('users')
         .document(_user.uid)
-        .updateData({'memos': updMemos});
+        .updateData({
+      'memos': FieldValue.arrayRemove([delMemo])
+    });
   }
 
   @override
@@ -81,14 +82,14 @@ class _MyHomePageState extends State<AnyMemoPage> {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             {
+              // TODO: use component of like loaging
               return Text('Waiting...');
             }
           default:
             {
               final memos = snapshot.data.data['memos'] as List;
               return ListView(
-                children:
-                    memos.map((memo) => _makeMemoTile(memos, memo)).toList(),
+                children: memos.map((memo) => _makeMemoTile(memo)).toList(),
               );
             }
         }
@@ -96,13 +97,13 @@ class _MyHomePageState extends State<AnyMemoPage> {
     );
   }
 
-  ListTile _makeMemoTile(List memos, dynamic memo) {
+  ListTile _makeMemoTile(dynamic memo) {
     return ListTile(
         title: Text(memo['context']),
         subtitle: Text(memo['created_time'].toString()),
         trailing: Icon(Icons.remove),
         onTap: () {
-          _deleteMemo(memos, memo);
+          _deleteMemo(memo);
         });
   }
 
