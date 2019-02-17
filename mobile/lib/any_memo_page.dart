@@ -21,8 +21,12 @@ class _MyHomePageState extends State<AnyMemoPage> {
     // TODO: implememts
   }
 
-  void _deleteMemo() {
-    // TODO: implememts
+  void _deleteMemo(List curMemos, dynamic delMemo) {
+    final updMemos = curMemos.where((memo) => memo != delMemo).toList();
+    Firestore.instance
+        .collection('users')
+        .document(_user.uid)
+        .updateData({'memos': updMemos});
   }
 
   @override
@@ -65,7 +69,41 @@ class _MyHomePageState extends State<AnyMemoPage> {
   }
 
   Widget _buildAppBody() {
-    return Center();
+    return StreamBuilder<DocumentSnapshot>(
+      stream: Firestore.instance
+          .collection('users')
+          .document(_user.uid)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            {
+              return Text('Waiting...');
+            }
+          default:
+            {
+              final memos = snapshot.data.data['memos'] as List;
+              return ListView(
+                children:
+                    memos.map((memo) => _makeMemoTile(memos, memo)).toList(),
+              );
+            }
+        }
+      },
+    );
+  }
+
+  ListTile _makeMemoTile(List memos, dynamic memo) {
+    return ListTile(
+        title: Text(memo['context']),
+        subtitle: Text(memo['created_time'].toString()),
+        trailing: Icon(Icons.remove),
+        onTap: () {
+          _deleteMemo(memos, memo);
+        });
   }
 
   Future<FirebaseUser> _doGoogleSignIn() async {
