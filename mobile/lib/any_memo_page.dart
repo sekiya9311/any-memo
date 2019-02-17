@@ -16,17 +16,23 @@ class AnyMemoPage extends StatefulWidget {
 
 class _MyHomePageState extends State<AnyMemoPage> {
   FirebaseUser _user;
+  Firestore _firestore;
 
   void _addMemo() {
     // TODO: implememts
   }
 
   Future<void> _deleteMemo(dynamic delMemo) {
-    return Firestore.instance
-        .collection('users')
-        .document(_user.uid)
-        .updateData({
+    return _firestore.collection('users').document(_user.uid).updateData({
       'memos': FieldValue.arrayRemove([delMemo])
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _firestore = Firestore.instance;
     });
   }
 
@@ -71,10 +77,7 @@ class _MyHomePageState extends State<AnyMemoPage> {
 
   Widget _buildAppBody() {
     return StreamBuilder<DocumentSnapshot>(
-      stream: Firestore.instance
-          .collection('users')
-          .document(_user.uid)
-          .snapshots(),
+      stream: _firestore.collection('users').document(_user.uid).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
