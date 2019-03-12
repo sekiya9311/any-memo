@@ -73,11 +73,11 @@ export default {
         this.loading = false
       })
     },
-    addMemo(memo) {
-      console.log(`call addMemo, newMemo: \'${memo}\'`)
+    addMemo({ fact, abstract }) {
+      console.log(`call addMemo, newMemo: \'${fact}\', \'${abstract}\'`)
       this.loading = true
       this.loadingText = 'Adding...'
-      this.$store.dispatch('addMemo', memo).then(e => {
+      this.$store.dispatch('addMemo', { fact, abstract }).then(e => {
         this.loading = false
       })
     }

@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     addMemo() {
-      this.$emit('add-memo', this.newMemo)
+      this.$emit('add-memo', { fact: this.newMemo, abstract: 'sample' })
       this.newMemo = ''
     }
   }

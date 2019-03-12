@@ -28,8 +28,10 @@ const createStore = () => {
       userMemos: state =>
         (state.userData || { memos: [] }).memos.map(memo => {
           return {
-            context: memo.context,
-            createdTime: memo.created_time.toDate()
+            fact: memo.fact,
+            abstract: memo.abstract,
+            createdTime: memo.created_time.toDate(),
+            updatedTime: memo.updated_time.toDate()
           }
         })
     },
@@ -65,15 +67,33 @@ const createStore = () => {
       bindUserData: firebaseAction(async ({ bindFirebaseRef }, data) => {
         await bindFirebaseRef('userData', data)
       }),
-      async addMemo({ state }, memo) {
+      async addMemo({ state }, { fact, abstract }) {
         const nowTimeStamp = firebase.firestore.Timestamp.fromDate(new Date())
         await fireStore
           .collection('users')
           .doc(state.user.uid)
           .update({
             memos: firebase.firestore.FieldValue.arrayUnion({
-              context: memo,
-              created_time: nowTimeStamp
+              fact: fact,
+              abstract: abstract,
+              created_time: nowTimeStamp,
+              updated_time: nowTimeStamp
+            })
+          })
+      },
+      async modifyMemo({ dispatch, state }, { index, fact, abstract }) {
+        const nowTimeStamp = firebase.firestore.Timestamp.fromDate(new Date())
+        const creaTedTime = state.userData.memos[index].created_time
+        await dispatch('deleteMemo', index)
+        await fireStore
+          .collection('users')
+          .doc(state.user.uid)
+          .update({
+            memos: firebase.firestore.FieldValue.arrayUnion({
+              fact: fact,
+              abstract: abstract,
+              created_time: creaTedTime,
+              updated_time: nowTimeStamp
             })
           })
       },
