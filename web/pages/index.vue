@@ -4,7 +4,7 @@
       row
       xl4>
       <!-- login and input -->
-      <add-memo-form
+      <input-memo-form
         v-if="user"
         :user="user"
         @add-memo="addMemo" />
@@ -37,13 +37,13 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import AddMemoForm from '~/components/AddMemoForm.vue'
+import InputMemoForm from '~/components/InputMemoForm.vue'
 import DisplayMemo from '~/components/DisplayMemo.vue'
 import MyDialog from '~/components/MyDialog.vue'
 
 export default {
   components: {
-    AddMemoForm,
+    InputMemoForm,
     DisplayMemo,
     MyDialog
   },
